@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config
+  namespace: ai-platform
+data:
+  DB_HOST: "postgres"
+  REDIS_HOST: "redis"
+  QDRANT_HOST: "qdrant"
+  NEXT_PUBLIC_API_URL: "http://ai-platform.local/api"
