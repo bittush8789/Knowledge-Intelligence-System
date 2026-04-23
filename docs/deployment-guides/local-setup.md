@@ -34,15 +34,11 @@ AWS_ACCESS_KEY=your_key
 AWS_SECRET_KEY=your_secret
 ```
 
-## 6. Run the Backend API
-```bash
-python backend/main.py
-```
-
-## 7. Run the Node.js Frontend
+## 7. Run the Frontend
+Since the frontend is now pure **HTML/CSS/JS**, you can just open `frontend/index.html` in your browser. 
+Or, use a simple local server:
 ```bash
 cd frontend
-npm install
-npm run dev
+npx serve .
 ```
-Aapka frontend ab `http://localhost:3000` par chal raha hoga aur API `http://localhost:8000` par.
+Aapka frontend ab `http://localhost:3000` (agar serve use kiya) par chal raha hoga.

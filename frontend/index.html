@@ -1,12 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Knowledge Platform</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <h1>AI Knowledge Platform</h1>
+        <div class="card">
+            <textarea id="question" placeholder="Ask a question about your documents..."></textarea>
+            <button id="ask-btn">Ask AI</button>
+        </div>
+        <div id="response-container" class="response" style="display: none;">
+            <h3>Response:</h3>
+            <p id="response-text"></p>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
 </html>
