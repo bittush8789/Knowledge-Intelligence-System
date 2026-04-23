@@ -1,0 +1,6 @@
+vector_db/
+.vscode/
+__pycache__/
+*.pyc
+.env
+.ipynb_checkpoints/
