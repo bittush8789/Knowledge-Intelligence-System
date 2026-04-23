@@ -6,8 +6,7 @@ This branch (`cicd`) contains the modernized, enterprise-grade transformation of
 - **Modern Microservices**: Next.js 14 Frontend + FastAPI Backend.
 - **Advanced AI**: Multi-agent RAG workflows using **LangGraph**.
 - **Production Infrastructure**: **AWS EKS** (Kubernetes) managed via **Terraform**.
-- **Full DevSecOps**: Automated security scanning (Trivy, Semgrep) and CI/CD (GitHub Actions).
-- **GitOps Ready**: Pre-configured for **ArgoCD** deployments.
+- **Full CI/CD**: Automated security scanning (Trivy, Semgrep) and CI/CD (GitHub Actions).
 - **High Observability**: Prometheus, Grafana, Loki, and OpenTelemetry integration.
 
 ## 📁 Project Structure

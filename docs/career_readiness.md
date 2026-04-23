@@ -7,7 +7,7 @@
 - **Orchestrated Scalable Infrastructure** on **AWS EKS** using **Terraform** and **Helm**, achieving 99.9% availability through multi-AZ deployments.
 - **Enabled LLMOps Observability** by implementing full-stack tracing with **LangSmith** and custom **Prometheus/Grafana** dashboards for monitoring token usage and AI latency.
 - **Optimized Infrastructure Costs** by 40% through the strategic use of **AWS EC2 Spot Instances** and **KIND** for local development testing.
-- **Implemented GitOps** workflow using **ArgoCD** for declarative, automated deployments and environment synchronization.
+- **Implemented Automated CI/CD** workflow for seamless deployments and environment synchronization across clusters.
 
 ---
 
@@ -25,5 +25,3 @@
 ### Q: How do you ensure your Docker images are secure?
 **A**: We use **multi-stage builds** to keep the final image small and free of build tools. We also use **non-root users** inside the container to prevent privilege escalation. Finally, every image is scanned by **Trivy** in the CI pipeline, and we block the deployment if any CRITICAL or HIGH vulnerabilities are found.
 
-### Q: What is GitOps and why use ArgoCD?
-**A**: GitOps is a practice where the Git repository is the "single source of truth" for the infrastructure state. **ArgoCD** is a controller that monitors our Git repo and automatically syncs the Kubernetes cluster to match. This eliminates "configuration drift" and makes rollbacks as simple as a `git revert`.

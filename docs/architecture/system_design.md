@@ -33,7 +33,7 @@ The new architecture transforms the monolithic Flask app into a distributed micr
 - **Containerization**: Docker (Distroless for security).
 - **Orchestration**: AWS EKS (Kubernetes).
 - **IaC**: Terraform (Modular design).
-- **CI/CD**: GitHub Actions + ArgoCD (GitOps).
+- **CI/CD**: GitHub Actions for automated building and deployment.
 - **Security**: Trivy, Semgrep, Vault (Secrets).
 
 ## 3. High-Level Flow
