@@ -1,10 +1,13 @@
 flask==2.3.3
+flask-cors==4.0.0
 werkzeug==2.3.7
 langchain==0.0.267
+langgraph==0.0.10
 openai==0.28.0
 python-dotenv==0.19.0
 boto3==1.28.0
 chromadb==0.4.0
 pypdf==3.9.0
 tiktoken==0.5.1
-unstructured==0.10.30
+uvicorn==0.23.2
+gunicorn==21.2.0

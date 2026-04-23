@@ -1,7 +1,10 @@
 from langchain.chat_models import ChatOpenAI
 from langchain.chains import ConversationalRetrievalChain
 from langchain.memory import ConversationBufferMemory
-from config import Config
+try:
+    from config import Config
+except ImportError:
+    from ..config import Config
 
 class LLMService:
     def __init__(self, vector_store):
@@ -16,7 +19,7 @@ class LLMService:
         )
         self.chain = ConversationalRetrievalChain.from_llm(
             llm=self.llm,
-            retriever=vector_store.vectore_store.as_retriever(),
+            retriever=vector_store.vector_store.as_retriever(),
             memory=self.memory
         )
 
@@ -25,5 +28,4 @@ class LLMService:
             response = self.chain({"question": query})
             return response['answer']
         except Exception as e:
-            print(f"Error getting LLM response: {e}")
-            return "I encountered an error processing your request."
+            return f"Error: {str(e)}"

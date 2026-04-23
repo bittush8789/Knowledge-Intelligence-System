@@ -80,10 +80,14 @@ jobs:
 
       - name: Deploy to EKS
         run: |
-          # Use sed or kustomize to update the image tag to the current SHA
-          sed -i "s|image: backend:latest|image: ${{ secrets.DOCKERHUB_USERNAME }}/ai-backend:${{ github.sha }}|g" k8s/base/backend.yaml
-          kubectl apply -f k8s/base/
+          # Update backend image tag
+          sed -i "s|image: bittush8789/ai-backend:latest|image: ${{ secrets.DOCKERHUB_USERNAME }}/ai-backend:${{ github.sha }}|g" k8s-simple/backend-deployment.yaml
+          # Update frontend image tag
+          sed -i "s|image: bittush8789/ai-frontend:latest|image: ${{ secrets.DOCKERHUB_USERNAME }}/ai-frontend:${{ github.sha }}|g" k8s-simple/frontend-deployment.yaml
+          
+          kubectl apply -f k8s-simple/
           kubectl rollout status deployment/backend -n ai-platform
+          kubectl rollout status deployment/frontend -n ai-platform
 
       - name: Verify Deployment
         run: kubectl get pods -n ai-platform
