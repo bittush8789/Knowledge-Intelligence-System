@@ -1,7 +1,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: main-ingress
+  name: app-ingress
   namespace: ai-platform
   annotations:
     kubernetes.io/ingress.class: nginx
@@ -14,13 +14,13 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: backend
+            name: backend-service
             port:
               number: 80
       - path: /
         pathType: Prefix
         backend:
           service:
-            name: frontend
+            name: frontend-service
             port:
               number: 80

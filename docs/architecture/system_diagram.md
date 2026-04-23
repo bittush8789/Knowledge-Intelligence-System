@@ -1,32 +1,23 @@
-# System Architecture
+# Simple System Architecture
 
 ```mermaid
 graph TD
-    User([User]) --> Ingress[Nginx Ingress]
+    Users([Users]) --> Frontend[Next.js Frontend]
+    Frontend --> Backend[FastAPI Backend API]
     
-    subgraph K8s_Cluster [Kubernetes Cluster]
-        Ingress --> Frontend[Next.js Frontend]
-        Ingress --> Backend[FastAPI Gateway]
-        
-        Backend --> AI_Service[AI Orchestrator / LangGraph]
-        Backend --> Task_Queue[Celery Workers]
-        
-        Task_Queue --> Redis[(Redis Broker)]
-        AI_Service --> Redis[(Redis Cache)]
-        
-        AI_Service --> LLM_API{LLM Providers\nOpenAI/Claude/Gemini}
+    subgraph AI_Layer [AI / LLM Layer]
+        Backend --> Orchestrator[LangGraph Orchestrator]
+        Orchestrator --> LLM{OpenAI / Claude}
     end
     
-    subgraph Storage_Layer [Persistence & External]
+    subgraph Databases [Data & Persistence]
         Backend --> Postgres[(PostgreSQL Metadata)]
-        AI_Service --> Qdrant[(Qdrant Vector DB)]
-        Backend --> S3[AWS S3 Blobs]
+        Backend --> Redis[(Redis Cache)]
+        Orchestrator --> Qdrant[(Qdrant Vector DB)]
     end
     
-    subgraph Observability [Monitoring & Security]
-        Prometheus[Prometheus Metrics] -.-> K8s_Cluster
-        Grafana[Grafana Dashboards] --> Prometheus
-        Loki[Loki Logs] -.-> K8s_Cluster
-        Trivy[Trivy Scanner] -.-> K8s_Cluster
+    subgraph DevOps [Automation]
+        GHA[GitHub Actions] --> |Deploy| KIND[Local KIND Cluster]
+        GHA --> |Deploy| EKS[AWS EKS Cloud]
     end
 ```

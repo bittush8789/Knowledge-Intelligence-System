@@ -20,19 +20,6 @@ spec:
         - containerPort: 8000
         envFrom:
         - configMapRef:
-            name: app-config
+            name: backend-config
         - secretRef:
             name: backend-secrets
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: backend
-  namespace: ai-platform
-spec:
-  selector:
-    app: backend
-  ports:
-    - protocol: TCP
-      port: 80
-      targetPort: 8000

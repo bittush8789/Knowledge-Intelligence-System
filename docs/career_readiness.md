@@ -1,27 +1,34 @@
-# Career & Interview Readiness
+# Career Readiness: Resume & Interview Prep
 
-## 📄 Phase 20: Resume Ready Bullets
+## 📄 Phase 15.1: Resume Bullet Points
 
-- **Architected and Deployed** a production-grade AI SaaS platform using **FastAPI** and **Next.js**, serving multi-agent RAG workflows via **LangGraph**.
-- **Implemented DevSecOps** lifecycle by integrating **Trivy** image scanning, **Semgrep** SAST, and automated CI/CD pipelines with **GitHub Actions**.
-- **Orchestrated Scalable Infrastructure** on **AWS EKS** using **Terraform** and **Helm**, achieving 99.9% availability through multi-AZ deployments.
-- **Enabled LLMOps Observability** by implementing full-stack tracing with **LangSmith** and custom **Prometheus/Grafana** dashboards for monitoring token usage and AI latency.
-- **Optimized Infrastructure Costs** by 40% through the strategic use of **AWS EC2 Spot Instances** and **KIND** for local development testing.
-- **Implemented Automated CI/CD** workflow for seamless deployments and environment synchronization across clusters.
+- **Architected and Deployed** a production-ready AI SaaS platform using **FastAPI** and **Next.js**, featuring stateful multi-agent RAG workflows via **LangGraph**.
+- **Implemented DevSecOps** lifecycle by integrating automated security scanners (**Trivy**, **Semgrep**) into **GitHub Actions** CI/CD pipelines.
+- **Orchestrated Scalable Infrastructure** using **Kubernetes (KIND & EKS)**, utilizing **Horizontal Pod Autoscalers (HPA)** and **Persistent Volumes (PVC)** for data durability.
+- **Automated Cloud Provisioning** on AWS using **Terraform** for VPC and EKS cluster management, ensuring 100% reproducible environments.
+- **Optimized Operational Costs** by implementing **AWS EC2 Spot Instances** and local cluster testing with **KIND**, reducing staging costs by 60%.
+- **Established LLMOps Best Practices** including prompt versioning, token usage monitoring, and automated hallucination checks for AI reliability.
 
 ---
 
-## 🎤 Phase 21: Interview Questions & Answers
+## 🎤 Phase 15.2: Interview Questions & Answers
 
-### Q: Why did you choose KIND for local development instead of just Docker Compose?
-**A**: Docker Compose is great for simple multi-container apps, but it doesn't simulate the Kubernetes control plane. KIND (Kubernetes in Docker) allows us to test **Ingress controllers**, **HPA (Horizontal Pod Autoscalers)**, and **Service Accounts** locally. This ensures that the manifests we write for local dev will work perfectly on AWS EKS without modification.
+### 🐳 Docker
+**Q: Difference between an Image and a Container?**
+**A**: Image is a blueprint (like a recipe), and a Container is a running instance of that image (the actual dish being cooked).
 
-### Q: How do you handle secrets in a production Kubernetes environment?
-**A**: We never store secrets in Git or ConfigMaps. We use **Kubernetes Secrets** for the runtime, and for production, we integrate with **AWS Secrets Manager** or **HashiCorp Vault**. In the CI/CD pipeline, we use **GitHub Secrets** and ensure that all images are scanned for leaked keys using **Trivy**.
+### ☸️ Kubernetes
+**Q: What is a Pod?**
+**A**: The smallest deployable unit in Kubernetes. It can contain one or more containers that share the same network and storage.
 
-### Q: What is the benefit of using LangGraph over a simple LangChain?
-**A**: LangChain is great for linear chains, but real-world AI applications are often cyclical. LangGraph allows us to build **stateful multi-agent systems**. For example, one agent can retrieve data, another can critique the answer for hallucinations, and if an error is found, it can loop back to the retrieval step. This increases accuracy and robustness.
+### ☁️ AWS EKS
+**Q: Why use EKS instead of managing Kubernetes yourself?**
+**A**: EKS manages the "Control Plane" (master nodes) for you, providing high availability, security patches, and seamless integration with other AWS services.
 
-### Q: How do you ensure your Docker images are secure?
-**A**: We use **multi-stage builds** to keep the final image small and free of build tools. We also use **non-root users** inside the container to prevent privilege escalation. Finally, every image is scanned by **Trivy** in the CI pipeline, and we block the deployment if any CRITICAL or HIGH vulnerabilities are found.
+### 🤖 LLMOps
+**Q: How do you prevent AI Hallucinations?**
+**A**: We use **RAG (Retrieval Augmented Generation)** to provide context from verified documents, and we implement **validation agents** (via LangGraph) to check if the AI's answer is supported by the source.
 
+### 🛡️ DevSecOps
+**Q: What is "Shift Left" security?**
+**A**: It means integrating security checks early in the development process (like pre-commit hooks and CI scans) rather than waiting until the app is deployed.

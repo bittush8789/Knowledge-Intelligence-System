@@ -18,19 +18,3 @@ spec:
         image: bittush8789/ai-frontend:latest
         ports:
         - containerPort: 3000
-        envFrom:
-        - configMapRef:
-            name: app-config
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: frontend
-  namespace: ai-platform
-spec:
-  selector:
-    app: frontend
-  ports:
-    - protocol: TCP
-      port: 80
-      targetPort: 3000
