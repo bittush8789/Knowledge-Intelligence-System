@@ -1,45 +1,45 @@
-# Phase 2: Target Enterprise Architecture
+# Enterprise System Design Document
 
-## 1. Overview
-The new architecture transforms the monolithic Flask app into a distributed microservices system designed for high availability, security, and scalability on AWS EKS.
+## 1. Executive Summary
+The Knowledge Intelligence System (KIS) provides a secure, scalable way to interact with private document collections using LLMs. This document outlines the technical architecture, security protocols, and operational strategies for a production-grade deployment.
 
-## 2. Component Breakdown
+## 2. Core Architecture Patterns
 
-### 🎨 Frontend (Modern UI)
-- **Framework**: Next.js 14 (React)
-- **Styling**: Tailwind CSS + Shadcn UI
-- **State Management**: React Query (Server state) + Zustand (Client state)
-- **Features**: Real-time streaming AI responses, drag-and-drop uploads, interactive citations.
+### A. Modular Microservices
+The system is decomposed into loosely coupled services to allow independent scaling:
+- **API Gateway**: Handles authentication, request routing, and rate limiting.
+- **AI Orchestrator**: Manages stateful agentic workflows (LangGraph) and LLM interactions.
+- **Vector Engine**: Specialized indexing and retrieval service (Qdrant).
 
-### ⚙️ Backend (API Gateway & Core)
-- **Framework**: FastAPI (Asynchronous)
-- **Validation**: Pydantic v2
-- **Auth**: Clerk or Auth0 (OIDC)
-- **Task Queue**: Celery with Redis for heavy document processing.
+### B. Agentic RAG Workflow
+Unlike standard RAG, KIS uses a **Reasoning Loop**:
+1. **Query Transformation**: Rewriting user queries for better vector search.
+2. **Context Retrieval**: Multi-stage retrieval from Vector and Relational stores.
+3. **Reasoning Step**: Agent evaluates if the context is sufficient.
+4. **Answer Generation**: Synthesis of final response with citations.
 
-### 🧠 AI & LLMOps Layer
-- **Orchestration**: LangGraph (Stateful multi-agent workflows)
-- **RAG Pipeline**: Hybrid search (Dense + Sparse) with Re-ranking.
-- **Evaluation**: Ragas + LangSmith for hallucination detection.
-- **Tracing**: LangSmith for full prompt/latency visibility.
+## 3. Infrastructure Strategy (IaC)
 
-### 💾 Data Persistence
-- **Relational**: PostgreSQL (via AWS RDS) for user data and file metadata.
-- **Vector**: Qdrant (Distributed) for semantic embeddings.
-- **Cache**: Redis (via AWS ElastiCache).
-- **Blob**: AWS S3 for original document storage.
+### AWS EKS (Cloud)
+- **Networking**: VPC with Private Subnets for database isolation.
+- **Compute**: Managed Node Groups using **EC2 Spot Instances** for 70% cost reduction.
+- **Storage**: EBS for Postgres and EFS for shared document storage.
 
-### 🚢 Infrastructure & DevOps
-- **Containerization**: Docker (Distroless for security).
-- **Orchestration**: AWS EKS (Kubernetes).
-- **IaC**: Terraform (Modular design).
-- **CI/CD**: GitHub Actions for automated building and deployment.
-- **Security**: Trivy, Semgrep, Vault (Secrets).
+### KIND (Local)
+- Used for rapid inner-loop development.
+- Simulates multi-node Kubernetes behavior locally.
 
-## 3. High-Level Flow
-1. **User** uploads a PDF via **Next.js**.
-2. **FastAPI** saves metadata to **PostgreSQL** and triggers an async **Celery** task.
-3. **Worker** extracts text, generates embeddings, and stores them in **Qdrant**.
-4. **User** asks a question.
-5. **AI Orchestrator (LangGraph)** retrieves context from **Qdrant**, calls **OpenAI/Claude**, and streams the response back.
-6. **Prometheus/Loki** monitor performance and logs throughout the cycle.
+## 4. Security Hardening (DevSecOps)
+
+- **Supply Chain Security**: All base images are sourced from official Docker Hub Alpine/Slim tags.
+- **Vulnerability Management**: Automated CI blocks for any CRITICAL findings from **Trivy**.
+- **Least Privilege**: Services run with dedicated K8s ServiceAccounts and IAM Roles (IRSA).
+- **Network Policies**: Strictly control traffic between pods to prevent lateral movement.
+
+## 5. Scalability & Performance
+- **Caching**: Redis-backed semantic caching for recurring queries.
+- **Asynchronous Processing**: Celery/Redis for long-running document ingestion tasks.
+- **Database Tuning**: Optimized indexing for high-concurrency vector searches.
+
+---
+*Created by Bittu Sharma*

@@ -1,137 +1,135 @@
-# 🚀 Knowledge Intelligence System (KIS)
+# 🚀 Knowledge Intelligence System (KIS) - Enterprise Edition
 
-[![CI/CD Pipeline](https://github.com/bittush8789/Knowledge-Intelligence-System/actions/workflows/ci.yml/badge.svg)](https://github.com/bittush8789/Knowledge-Intelligence-System/actions)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
-[![Kubernetes](https://img.shields.io/badge/kubernetes-EKS%20%2F%20KIND-blue)](https://kubernetes.io/)
-
-**Knowledge Intelligence System (KIS)** is a production-grade, enterprise-scale AI platform designed for intelligent document processing and knowledge retrieval. Built with a modular microservices architecture, it leverages Large Language Models (LLMs) and Vector Databases to provide accurate, context-aware answers from your private documents.
-
----
-
-## 🌟 Key Features
-
-- **🧠 Multi-Agent RAG**: Advanced Retrieval-Augmented Generation workflows using **LangGraph**.
-- **⚡ Modern Frontend**: High-performance, responsive UI built with **HTML5, CSS3, and JavaScript**.
-- **🛡️ DevSecOps Integrated**: Automated security scanning with **Trivy** and **Semgrep**.
-- **☁️ Cloud Native**: Fully containerized and ready for **AWS EKS** (Cloud) or **KIND** (Local K8s).
-- **📈 Observability**: Pre-configured for **Prometheus** metrics and **Grafana** dashboards.
-- **🏗️ Infrastructure as Code**: Automated environment provisioning using **Terraform**.
+<p align="center">
+  <img src="https://img.shields.io/badge/Architecture-Microservices-orange?style=for-the-badge" alt="Architecture">
+  <img src="https://img.shields.io/badge/Security-DevSecOps-red?style=for-the-badge" alt="Security">
+  <img src="https://img.shields.io/badge/Infrastructure-Terraform-blue?style=for-the-badge" alt="Infrastructure">
+  <img src="https://img.shields.io/badge/Deployment-Kubernetes-blue?style=for-the-badge" alt="Deployment">
+</p>
 
 ---
 
-## 🏗️ System Architecture
+## 📖 Table of Contents
+- [Overview](#-overview)
+- [System Architecture](#-system-architecture)
+- [Enterprise Features](#-enterprise-features)
+- [Tech Stack](#-tech-stack)
+- [Project Layout](#-project-layout)
+- [Deployment Strategy](#-deployment-strategy)
+- [DevSecOps Lifecycle](#-devsecops-lifecycle)
+- [Getting Started](#-getting-started)
+- [Monitoring & SLIs](#-monitoring--slis)
 
+---
+
+## 🧐 Overview
+The **Knowledge Intelligence System (KIS)** is a cloud-native, AI-powered knowledge management platform. It transforms unstructured data (PDFs, Docs, Text) into an interactive knowledge base using **Agentic RAG** (Retrieval-Augmented Generation). Designed for high availability, scalability, and security, KIS follows the **Twelve-Factor App** methodology.
+
+---
+
+## 🏗️ System Architecture (Enterprise Grade)
+
+### High-Level Design
 ```mermaid
-graph TD
-    User([User]) --> |HTTPS| Ingress[Nginx Ingress]
-    
-    subgraph Cluster [Kubernetes / Docker]
-        Ingress --> Frontend[Frontend Service]
-        Ingress --> Backend[Backend API]
-        
-        Backend --> AI_Engine[AI Orchestrator]
-        AI_Engine --> LLM{OpenAI / Claude}
-        
-        Backend --> Redis[(Redis Cache)]
-        AI_Engine --> Qdrant[(Qdrant Vector DB)]
-        Backend --> Postgres[(Postgres Metadata)]
+graph LR
+    subgraph Client_Layer [Traffic Management]
+        User([End User]) --> |HTTPS| CloudFront[AWS CloudFront]
+        CloudFront --> |ALB| Ingress[Nginx Ingress Controller]
     end
-    
-    subgraph DevOps [CI/CD & Security]
-        GHA[GitHub Actions] --> |Scan| Trivy[Trivy Scanner]
-        GHA --> |Deploy| Cluster
+
+    subgraph Service_Mesh [Business Logic Layer]
+        Ingress --> |Route| API[API Gateway / Backend]
+        API --> |gRPC/Rest| Orchestrator[AI Agent Orchestrator]
+        API --> |Job| Worker[Document Processing Worker]
+    end
+
+    subgraph Persistence_Layer [State & Knowledge]
+        API --> Postgres[(PostgreSQL Metadata)]
+        API --> Redis[(Redis Cache/Queue)]
+        Orchestrator --> Qdrant[(Qdrant Vector DB)]
+        Worker --> S3[AWS S3 Blob Storage]
+    end
+
+    subgraph Observability_Stack [Monitoring]
+        API -.-> Prometheus[Prometheus]
+        Orchestrator -.-> LangSmith[LangSmith Tracing]
+        LogCollector[FluentBit] --> Loki[Grafana Loki]
     end
 ```
 
 ---
 
-## 📁 Project Structure
+## ✨ Enterprise Features
+- **Agentic Workflows**: Multi-step reasoning agents powered by **LangGraph**.
+- **Self-Healing Infrastructure**: Kubernetes-managed pod health with automated rollouts.
+- **Zero-Trust Security**: mTLS communication and non-root distroless containers.
+- **Auto-Scaling**: Horizontal Pod Autoscaler (HPA) based on custom metrics.
+- **GitOps Driven**: Fully automated deployments via GitHub Actions and Terraform.
 
+---
+
+## 🛠️ Tech Stack
+| Category | Technology |
+| :--- | :--- |
+| **Backend** | FastAPI (Python 3.11+), LangChain, LangGraph |
+| **Frontend** | Static HTML5/CSS3/JS (High Speed, Zero JS overhead) |
+| **Databases** | PostgreSQL (Relational), Qdrant (Vector), Redis (Cache) |
+| **Infrastructure** | Terraform, AWS EKS, KIND (Local) |
+| **DevSecOps** | Trivy, Semgrep, GitHub Actions |
+| **Monitoring** | Prometheus, Grafana, Loki |
+
+---
+
+## 📁 Project Layout
 ```text
 .
-├── backend/            # FastAPI/Flask API & AI Logic
-├── frontend/           # Static HTML/CSS/JS Frontend
-├── ai/                 # LangGraph Agents & Prompts
-├── k8s-simple/         # Kubernetes Manifests
-├── docker/             # Dockerfiles & Compose
-├── infra/              # Terraform IaC Files
-├── docs/               # Detailed Setup & User Guides
-└── scripts/            # Automation & Utility Scripts
+├── backend/            # Business Logic & API Endpoints
+├── frontend/           # Modern UI (Static Assets)
+├── ai/                 # Agentic RAG Workflows & Prompts
+├── infra/
+│   ├── terraform/      # AWS EKS, VPC, RDS Modules
+│   └── k8s-simple/     # Kubernetes Core Manifests
+├── docs/
+│   ├── architecture/   # ADRs & Design Diagrams
+│   ├── setup-guides/   # Tool Installation Documents
+│   └── career/         # Resume & Interview Prep
+├── scripts/            # CI/CD & Automation Utility
+└── docker/             # Production-grade Dockerfiles
 ```
 
 ---
 
-## 🚀 Getting Started
+## 🚀 Deployment Strategy
 
-### 1. Local Development (No Docker)
+### 🛡️ Production (AWS EKS)
+1. **Provision**: `terraform apply` (EKS, VPC, IAM).
+2. **Deploy**: `kubectl apply -f infra/k8s-simple/`.
+3. **Verify**: Check ALB LoadBalancer status.
+
+### 💻 Local (KIND)
 ```bash
-# Clone the repository
-git clone https://github.com/bittush8789/Knowledge-Intelligence-System.git
-cd Knowledge-Intelligence-System
-
-# Setup Environment
-cp .env.example .env  # Add your API keys here
-
-# Install Dependencies
-pip install -r requirements.txt
-
-# Run Backend
-python backend/main.py
-```
-
-### 2. Local Kubernetes (KIND)
-```bash
-# Create Cluster
-kind create cluster --name ai-platform
-
-# Deploy App
-cd k8s-simple
-bash deploy-all.sh
+# Spin up local cluster
+kind create cluster --config infra/k8s-simple/kind-config.yaml
+# Deploy platform
+bash scripts/deploy-local.sh
 ```
 
 ---
 
-## 🛡️ Security & DevSecOps
-
-This project adheres to enterprise security standards:
-- **Image Scanning**: Every build is scanned by **Trivy**.
-- **SAST**: Code is analyzed by **Semgrep** for vulnerabilities.
-- **Non-Root Containers**: Services run as non-privileged users.
-- **Secret Management**: Environment variables handled via K8s Secrets.
-
----
-
-## 📊 Monitoring & Observability
-
-- **Prometheus**: Collects application and cluster metrics.
-- **Grafana**: Visualizes health, latency, and token usage.
-- **Loki**: Centralized logging for all microservices.
-
----
-
-## 🤝 Contributing
-
-We welcome contributions! Please see our [Contribution Guide](docs/CONTRIBUTING.md) for details.
-
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+## 📊 Monitoring & SLIs
+We monitor the following Service Level Indicators (SLIs):
+- **Latency**: AI response time < 2s (P95).
+- **Availability**: 99.9% uptime for the API Gateway.
+- **Throughput**: 100+ concurrent document processing tasks.
+- **Cost**: Real-time token usage tracking via custom dashboards.
 
 ---
 
 ## 📄 License
-
-Distributed under the MIT License. See `LICENSE` for more information.
-
----
-
-## 📧 Contact
-
-**Bittu Sharma** - [@bittush8789](https://github.com/bittush8789)  
-**Project Link**: [https://github.com/bittush8789/Knowledge-Intelligence-System](https://github.com/bittush8789/Knowledge-Intelligence-System)
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ---
-<p align="center">Made with ❤️ for the AI Community</p>
+<p align="center">
+  <b>Built for Scale. Secured for Enterprise.</b><br>
+  Developed by <b>Bittu Sharma</b>
+</p>
