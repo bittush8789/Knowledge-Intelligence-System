@@ -34,8 +34,15 @@ AWS_ACCESS_KEY=your_key
 AWS_SECRET_KEY=your_secret
 ```
 
-## 6. Run the Application
+## 6. Run the Backend API
 ```bash
-python app/main.py
+python backend/main.py
 ```
-Aapka app ab `http://localhost:8080` par chal raha hoga.
+
+## 7. Run the Node.js Frontend
+```bash
+cd frontend
+npm install
+npm run dev
+```
+Aapka frontend ab `http://localhost:3000` par chal raha hoga aur API `http://localhost:8000` par.
